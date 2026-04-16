@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { ApiError } from "../utils/AppError";
+import { AppError } from "../utils/AppError";
 import { fail } from "../utils/envolve";
 
 export function errorHanlder(
@@ -8,7 +8,7 @@ export function errorHanlder(
   res: Response,
   _next: NextFunction,
 ) {
-  if (err instanceof ApiError) {
+  if (err instanceof AppError) {
     return res.status(err.statusCode).json(fail(err.message, "APP_ERROR"));
   }
 

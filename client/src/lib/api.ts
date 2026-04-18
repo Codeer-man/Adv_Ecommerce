@@ -45,15 +45,72 @@ function getError(error: unknown) {
   return "Something went wrong";
 }
 
-export async function getApi<T>(url: string, config?: AxiosRequestConfig) {
+export async function apiGet<T>(url: string, config?: AxiosRequestConfig) {
   try {
-    const respones = await api.get<ApiEnvelope<T>>(url, config);
+    const response = await api.get<ApiEnvelope<T>>(url, config);
+
+    if (response.data.status === "error" || !response.data.data) {
+      throw new Error(response.data.errors?.[0].message || "Request failed");
+    }
+
+    return response.data.data;
+  } catch (error) {
+    throw new Error(getError(error));
+  }
+}
+
+export async function apiPost<TResponse, Tbody = unknown>(
+  url: string,
+  body?: Tbody,
+  config?: AxiosRequestConfig,
+) {
+  try {
+    const response = await api.post<ApiEnvelope<TResponse>>(url, body, config);
+
+    if (response.data.status === "error" || !response.data.data) {
+      throw new Error(response.data.errors?.[0].message || "Request failed");
+    }
+
+    return response.data.data;
+  } catch (error) {
+    throw new Error(getError(error));
+  }
+}
+
+export async function apiPut<TResponse, Tbody = unknown>(
+  url: string,
+  body: Tbody,
+  config?: AxiosRequestConfig,
+) {
+  try {
+    const respones = await api.put<ApiEnvelope<TResponse>>(url, body, config);
 
     if (respones.data.status === "error" || !respones.data.data) {
       throw new Error(respones.data.errors?.[0].message || "Request failed");
     }
 
     return respones.data.data;
+  } catch (error) {
+    throw new Error(getError(error));
+  }
+}
+
+export async function apiDelete<TResponse>(
+  url: string,
+  // body?: Tbody,
+  config?: AxiosRequestConfig,
+) {
+  try {
+    const response = await api.delete<ApiEnvelope<TResponse>>(
+      url,
+      config,
+      // body,
+      // config,
+    );
+
+    if (response.data.status === "error" || !response.data.data) {
+      throw new Error(response.data.errors?.[0].message || "Request failed");
+    }
   } catch (error) {
     throw new Error(getError(error));
   }

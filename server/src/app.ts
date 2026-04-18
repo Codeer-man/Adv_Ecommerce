@@ -28,7 +28,7 @@ app.use("/health", (_req, res) => {
   res.status(200).json(ok({ message: "Server is healthy/in running state" }));
 });
 
-app.use("auth", authRoute);
+app.use("/auth", authRoute);
 
 app.use(notFound);
 app.use(errorHanlder);

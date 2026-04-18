@@ -85,7 +85,7 @@ authRoute.post(
 );
 
 authRoute.get(
-  "me",
+  "/me",
   requireAuth,
   asyncHanlder(async (req, res) => {
     const { userId } = getAuth(req);

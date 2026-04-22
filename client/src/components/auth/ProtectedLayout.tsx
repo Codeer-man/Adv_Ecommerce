@@ -7,12 +7,12 @@ export default function ProtectedLayout() {
   const { isBootstrapped, status } = useAuthStore();
   const location = useLocation();
 
-  if (!isLoaded && (!isBootstrapped || status === "loading")) null;
+  if (!isLoaded && (!isBootstrapped || status === "loading")) return null;
 
   if (!isSignedIn) {
     return (
       <Navigate
-        to={"sign-in"}
+        to={"/sign-in"}
         replace
         state={{ from: `${location.pathname}${location.search}` }}
       />

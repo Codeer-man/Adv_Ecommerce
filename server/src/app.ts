@@ -7,6 +7,7 @@ import { notFound } from "./middleware/not-found";
 import { errorHanlder } from "./middleware/errorHandler";
 import { clerkMiddleware } from "@clerk/express";
 import { authRoute } from "./routes/auth/auth.routes";
+import { adminProductRouter } from "./routes/admin/products.route";
 
 const app = express();
 
@@ -28,8 +29,13 @@ app.use("/health", (_req, res) => {
   res.status(200).json(ok({ message: "Server is healthy/in running state" }));
 });
 
+//auth routes
 app.use("/auth", authRoute);
 
+//admin routes
+app.use("/admin", adminProductRouter);
+
+//customer routes
 app.use(notFound);
 app.use(errorHanlder);
 

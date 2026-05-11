@@ -14,7 +14,7 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction) {
   next();
 }
 
-export async function getDbUser(req: Request) {
+export async function getDbUserFromReq(req: Request) {
   const { userId } = getAuth(req);
 
   if (!userId) {
@@ -29,7 +29,7 @@ export async function getDbUser(req: Request) {
 
 export const adminRequired = asyncHanlder(
   async (req: Request, res: Response, next: NextFunction) => {
-    const extractCurrentDbUser = await getDbUser(req);
+    const extractCurrentDbUser = await getDbUserFromReq(req);
 
     if (extractCurrentDbUser.role !== "admin") {
       throw new AppError(403, "Admin access only");

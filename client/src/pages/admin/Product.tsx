@@ -1,5 +1,64 @@
 import React from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+import ProductToolbox from "../../components/admin/products/product-toolbox";
+import useAdminProducts from "../../feature/admin/products/use-admin-product";
+import { CategoryDialogue } from "../../components/admin/products/category-dialogue";
+
+const pageWrap = "space-y-6 p-6";
+
+const cardClass = "border-border bg-card shadow-sm";
+
+const cardHeaderClass = "space-y-4";
+
+const cardTitleClass = "text-xl";
+
+const cardContentClass = "space-y-4";
 
 export default function AdminProducts() {
-  return <div>AdminProducts</div>;
+  const {
+    search,
+    setSearch,
+    products,
+    categories,
+    loading,
+    refreshAll,
+    categoryDialogueOpen,
+    setCategoryDialogueOpen,
+    productDialogurOpen,
+    setProductDialogurOpen,
+    editingProduct,
+    openCreateDialogue,
+    closeProductDialogue,
+  } = useAdminProducts();
+
+  return (
+    <div className={pageWrap}>
+      <Card className={cardClass}>
+        <CardHeader className={cardHeaderClass}>
+          <CardTitle className={cardTitleClass}>
+            Products{" "}
+            <ProductToolbox
+              search={search}
+              onSearchChange={setSearch}
+              onAddProduct={() => openCreateDialogue}
+              onManageChange={() => setCategoryDialogueOpen(true)}
+            />
+          </CardTitle>
+        </CardHeader>
+        <CardContent>table</CardContent>
+      </Card>
+
+      <CategoryDialogue
+        open={categoryDialogueOpen}
+        onOpenChange={setCategoryDialogueOpen}
+        categories={categories}
+        onSaved={refreshAll}
+      />
+    </div>
+  );
 }

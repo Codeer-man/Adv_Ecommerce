@@ -12,6 +12,7 @@ import { numberRequired, requireFound, textRequired } from "../../utils/helper";
 import { Product } from "../../models/product";
 import { AppError } from "../../utils/AppError";
 import { uploadManyBufferToCloudinary } from "../../utils/cloudinary";
+import { resolve } from "dns";
 
 type uploadedImages = {
   url: string;
@@ -45,6 +46,19 @@ adminProductRouter.get(
 );
 
 adminProductRouter.post(
+  "/categories",
+  adminRequired,
+  asyncHanlder(async (req, res) => {
+    const name = String(req.body.name).trim();
+    textRequired(name, "Name is required");
+
+    const category = Category.create({ name });
+
+    res.status(201).json(ok(category));
+  }),
+);
+
+adminProductRouter.put(
   "/categories/:id",
   adminRequired,
   asyncHanlder(async (req, res) => {
@@ -58,7 +72,6 @@ adminProductRouter.post(
     category.name = name;
 
     await category.save();
-
     res.status(201).json(ok(category));
   }),
 );

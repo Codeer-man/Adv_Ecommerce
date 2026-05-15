@@ -25,7 +25,7 @@ const items: AdminNavItem[] = [
 
 export default function AdminSidebar() {
   const sidebarRoot =
-    "hidden w-[300px] shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col";
+    " w-[300px] shrink-0 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col";
 
   const brandRow =
     "flex h-[72px] items-center border-b border-sidebar-border px-5";

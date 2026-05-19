@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardContent,
@@ -8,6 +7,7 @@ import {
 import ProductToolbox from "../../components/admin/products/product-toolbox";
 import useAdminProducts from "../../feature/admin/products/use-admin-product";
 import { CategoryDialogue } from "../../components/admin/products/category-dialogue";
+import ProductDialogue from "../../components/admin/products/product-dialogue";
 
 const pageWrap = "space-y-6 p-6";
 
@@ -45,7 +45,7 @@ export default function AdminProducts() {
             <ProductToolbox
               search={search}
               onSearchChange={setSearch}
-              onAddProduct={() => openCreateDialogue}
+              onAddProduct={openCreateDialogue}
               onManageChange={() => setCategoryDialogueOpen(true)}
             />
           </CardTitle>
@@ -56,6 +56,21 @@ export default function AdminProducts() {
       <CategoryDialogue
         open={categoryDialogueOpen}
         onOpenChange={setCategoryDialogueOpen}
+        categories={categories}
+        onSaved={refreshAll}
+      />
+
+      <ProductDialogue
+        open={productDialogurOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            closeProductDialogue();
+            return;
+          }
+
+          setProductDialogurOpen(true);
+        }}
+        product={editingProduct}
         categories={categories}
         onSaved={refreshAll}
       />

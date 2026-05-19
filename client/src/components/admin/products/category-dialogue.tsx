@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { Category } from "../../../feature/admin/products/types";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -10,10 +9,10 @@ import {
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { Separator } from "../../ui/separator";
-import { Pencil, SaveAll, Tag } from "lucide-react";
+import { Pencil, Tag } from "lucide-react";
 import {
   createAdminCategory,
-  updateAdminBody,
+  updateAdminCategory,
 } from "../../../feature/admin/products/api";
 
 const dialogContentClass = "sm:max-w-xl";
@@ -61,7 +60,7 @@ export function CategoryDialogue({
       setSaving(true);
 
       if (editingCategory) {
-        await updateAdminBody(editingCategory._id, { name: name.trim() });
+        await updateAdminCategory(editingCategory._id, { name: name.trim() });
       } else {
         await createAdminCategory({ name: name.trim() });
       }

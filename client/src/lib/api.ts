@@ -10,9 +10,9 @@ export function setApiTokenGetter(getToken: () => Promise<string | null>) {
 
 const api = axios.create({
   baseURL: env.backendUrl,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   "Content-Type": "application/json", //! broswer automatucally send when using form
+  // },
   withCredentials: false,
 });
 
@@ -32,7 +32,7 @@ api.interceptors.request.use(async (config) => {
 function getError(error: unknown) {
   if (axios.isAxiosError(error)) {
     return (
-      error.response?.data?.error[0]?.message ||
+      error.response?.data?.errors[0]?.message ||
       error.message ||
       "request failted"
     );

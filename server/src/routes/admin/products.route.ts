@@ -12,7 +12,6 @@ import { numberRequired, requireFound, textRequired } from "../../utils/helper";
 import { Product } from "../../models/product";
 import { AppError } from "../../utils/AppError";
 import { uploadManyBufferToCloudinary } from "../../utils/cloudinary";
-import { resolve } from "dns";
 
 type uploadedImages = {
   url: string;
@@ -90,7 +89,7 @@ adminProductRouter.get(
     }
 
     const products = await Product.find(query)
-      .populate("name", "category")
+      .populate("category", "name")
       .sort({ createdAt: -1 });
 
     res.json(ok(products));
@@ -183,7 +182,7 @@ adminProductRouter.post(
   }),
 );
 
-adminProductRouter.post(
+adminProductRouter.put(
   "/products/:id",
   upload.array("images", 10),
   asyncHanlder(async (req, res) => {

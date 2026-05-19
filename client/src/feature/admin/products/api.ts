@@ -19,7 +19,7 @@ export async function createAdminCategory(body: CreateCategoryBody) {
   return apiPost<Category, CreateCategoryBody>("/admin/categories", body);
 }
 
-export async function updateAdminBody(
+export async function updateAdminCategory(
   categoryId: string,
   body: UpdateCategoryBody,
 ) {
@@ -69,7 +69,7 @@ function buildProductFormDara(
     formData.append("coverImagePublicId", body.coverImagePublicId);
   }
 
-  files.forEach((file) => formData.append("files", file));
+  files.forEach((file) => formData.append("images", file));
 
   return formData;
 }
@@ -81,4 +81,14 @@ export async function createAdminProduct(
   const formData = buildProductFormDara(body, file);
 
   return apiPost<Product, FormData>("/admin/products", formData);
+}
+
+export async function updateAdminProduct(
+  productId: string,
+  body: UpdateProductBody,
+  files: File[],
+) {
+  const formData = buildProductFormDara(body, files);
+
+  return apiPut(`/admin/product/${productId}`, formData);
 }

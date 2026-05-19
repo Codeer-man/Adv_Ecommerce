@@ -8,7 +8,6 @@ type RoleGuard = {
 
 export default function RoleGuard({ allow }: RoleGuard) {
   const { isBootstrapped, user, status } = useAuthStore();
-  console.log(user);
 
   if (!isBootstrapped || status === "loading") return null;
 

@@ -61,8 +61,8 @@ function buildProductFormDara(
   body.colors.forEach((color) => formData.append("colors", color));
   body.sizes.forEach((size) => formData.append("sizes", size));
 
-  if ("existingImage" in body && body.existingImage) {
-    formData.append("existingImage", JSON.stringify(body.existingImage));
+  if ("existingImages" in body && body.existingImages) {
+    formData.append("existingImages", JSON.stringify(body.existingImages));
   }
 
   if ("coverImagePublicId" in body && body.coverImagePublicId) {
@@ -90,5 +90,5 @@ export async function updateAdminProduct(
 ) {
   const formData = buildProductFormDara(body, files);
 
-  return apiPut(`/admin/product/${productId}`, formData);
+  return apiPut(`/admin/products/${productId}`, formData);
 }

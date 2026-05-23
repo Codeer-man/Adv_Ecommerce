@@ -227,7 +227,7 @@ export default function ProductDialogue({
               {saving
                 ? "saving"
                 : isEditMode
-                  ? "UpdateProduct"
+                  ? "Update Product"
                   : "Create Product"}
             </Button>
           </div>

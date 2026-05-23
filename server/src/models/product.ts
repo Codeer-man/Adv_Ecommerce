@@ -12,7 +12,7 @@ const ProductImageSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    isCoverImg: {
+    isCover: {
       type: Boolean,
       default: false,
     },

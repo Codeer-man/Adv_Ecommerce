@@ -124,8 +124,8 @@ adminProductRouter.post(
     const salePercentage = Number(req.body.salePercentage);
     const stock = Number(req.body.stock);
     const status = String(req.body.status || "active").trim();
-    const colors = req.body.color || [];
-    const sizes = req.body.size || [];
+    const colors = req.body.colors || [];
+    const sizes = req.body.sizes || [];
 
     textRequired(title, "Title is required");
     textRequired(description, "description is required");
@@ -197,8 +197,8 @@ adminProductRouter.put(
     const status = String(req.body.status || "active").trim() as
       | "active"
       | "inactive";
-    const colors = req.body.color || [];
-    const sizes = req.body.size || [];
+    const colors = req.body.colors || [];
+    const sizes = req.body.sizes || [];
     const coverImagePublicId = String(req.body.coverImagePublicId || "").trim();
 
     textRequired(title, "Title is required");
@@ -231,11 +231,13 @@ adminProductRouter.put(
       isCover: false,
     }));
 
-    let existingImages: uploadedImages[] = product.images.map((images) => ({
-      url: images.url,
-      publicId: images.publicId,
-      isCover: images.isCoverImg,
-    }));
+    let existingImages: uploadedImages[] = product.images.map(
+      (images: uploadedImages) => ({
+        url: images.url,
+        publicId: images.publicId,
+        isCover: images.isCover,
+      }),
+    );
 
     const mergeImages: uploadedImages[] = [
       ...existingImages,

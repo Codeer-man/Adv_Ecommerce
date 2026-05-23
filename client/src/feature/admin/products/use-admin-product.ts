@@ -50,6 +50,11 @@ export default function useAdminProducts() {
     setEditingProduct(null);
   }
 
+  function openEditProductDialogue(product: Product) {
+    setEditingProduct(product);
+    setProductDialogurOpen(true);
+  }
+
   const refreshAll = useCallback(async () => {
     await Promise.all([loadCategories(), loadProducts()]);
   }, [search, loadCategories, loadProducts]);
@@ -68,5 +73,6 @@ export default function useAdminProducts() {
     editingProduct,
     openCreateDialogue,
     closeProductDialogue,
+    openEditProductDialogue,
   };
 }

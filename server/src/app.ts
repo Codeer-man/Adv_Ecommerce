@@ -8,6 +8,7 @@ import { errorHanlder } from "./middleware/errorHandler";
 import { clerkMiddleware } from "@clerk/express";
 import { authRoute } from "./routes/auth/auth.routes";
 import { adminProductRouter } from "./routes/admin/products.route";
+import { customerProductRouter } from "./routes/customer/product.route";
 
 const app = express();
 
@@ -36,6 +37,8 @@ app.use("/auth", authRoute);
 app.use("/admin", adminProductRouter);
 
 //customer routes
+app.use("/cusoter", customerProductRouter);
+
 app.use(notFound);
 app.use(errorHanlder);
 

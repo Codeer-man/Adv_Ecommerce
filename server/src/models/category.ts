@@ -1,4 +1,12 @@
-import { model, Schema } from "mongoose";
+import { HydratedDocument, HydrateOptions, model, Schema } from "mongoose";
+
+export type Category = {
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type categoryDoc = HydratedDocument<Category>;
 
 const categorySchema = new Schema(
   {
@@ -11,4 +19,4 @@ const categorySchema = new Schema(
   { timestamps: true },
 );
 
-export const Category = model("Category", categorySchema);
+export const Category = model<categoryDoc>("Category", categorySchema);

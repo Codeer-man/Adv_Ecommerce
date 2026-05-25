@@ -8,7 +8,10 @@ import { errorHanlder } from "./middleware/errorHandler";
 import { clerkMiddleware } from "@clerk/express";
 import { authRoute } from "./routes/auth/auth.routes";
 import { adminProductRouter } from "./routes/admin/products.route";
+import { adminPromoRoute } from "./routes/admin/promo.route";
 import { customerProductRouter } from "./routes/customer/product.route";
+import { customerAddressRoute } from "./routes/customer/address.route";
+import { customerPromoRoute } from "./routes/customer/promo.route";
 
 const app = express();
 
@@ -35,9 +38,12 @@ app.use("/auth", authRoute);
 
 //admin routes
 app.use("/admin", adminProductRouter);
+app.use("/admin", adminPromoRoute);
 
 //customer routes
-app.use("/cusoter", customerProductRouter);
+app.use("/customer", customerProductRouter);
+app.use("/customer", customerPromoRoute);
+app.use("/customer", customerAddressRoute);
 
 app.use(notFound);
 app.use(errorHanlder);

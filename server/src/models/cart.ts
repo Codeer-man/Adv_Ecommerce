@@ -17,7 +17,7 @@ export type Cart = {
 
 export type CartDoc = HydratedDocument<Cart>;
 
-export const CartItemSchema = new Schema<CartItem>(
+const CartItemSchema = new Schema<CartItem>(
   {
     product: {
       type: Schema.Types.ObjectId,

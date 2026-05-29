@@ -8,6 +8,7 @@ import { Types } from "mongoose";
 import { Cart, CartItem } from "../../models/cart";
 import { AppError } from "../../utils/AppError";
 import { numberRequired, requireFound, textRequired } from "../../utils/helper";
+import { Wishlist, wishlistType } from "../../models/wishList";
 
 export const customerCartWishlistRouter = Router();
 
@@ -84,6 +85,26 @@ async function getCartResponse(userId: string) {
   return {
     items,
     totalQuantity,
+  };
+}
+
+async function getWishlistResponse(userId: string) {
+  const wishlist = await Wishlist.findOne({ user: userId }).populate(
+    "products",
+    "title brand  price salepercentage images",
+  );
+
+  const product = (wishlist?.products ||
+    []) as unknown as Array<ProductPreview>;
+
+  const items = product.flatMap((productItem) => {
+    if (!productItem) return;
+
+    return [formatProduct(productItem)];
+  });
+
+  return {
+    items,
   };
 }
 
@@ -432,5 +453,77 @@ customerCartWishlistRouter.post(
 
       res.json(ok(await getCartResponse(String(dbUser._id))));
     }
+  }),
+);
+
+customerCartWishlistRouter.get(
+  "/wishlist/items",
+  asyncHanlder(async (req, res) => {
+    const dbUser = await getDbUserFromReq(req);
+
+    res.json(ok(getWishlistResponse(String(dbUser._id))));
+  }),
+);
+
+customerCartWishlistRouter.get(
+  "/wishlist/items",
+  asyncHanlder(async (req, res) => {
+    const dbUser = await getDbUserFromReq(req);
+
+    const productId = String(req.body.productId || "").trim();
+    textRequired(productId, "Product id is required");
+
+    const product = await Product.findOne({
+      _id: productId,
+      status: "active",
+    });
+
+    const foundProduct = requireFound(product, "Product not found", 404);
+
+    let wishlist = await Wishlist.findOne({ user: dbUser._id });
+
+    if (!wishlist) {
+      wishlist = await Wishlist.create({
+        user: dbUser._id,
+        products: [],
+      });
+    }
+
+    const exist = wishlist.products.some((items) => {
+      items._id === foundProduct._id;
+    });
+
+    if (!exist) {
+      wishlist.products.push(foundProduct._id);
+      await wishlist.save();
+    }
+
+    res.json(ok(getWishlistResponse(String(dbUser._id))));
+  }),
+);
+
+customerCartWishlistRouter.delete(
+  "/wishlist/delete",
+  asyncHanlder(async (req, res) => {
+    const dbUser = await getDbUserFromReq(req);
+
+    const productId = String(req.body.productId || "").trim();
+
+    textRequired(productId, "Product id is requried");
+
+    const wishlist = await Wishlist.findOne({ user: dbUser._id });
+
+    if (!wishlist) {
+      res.json(ok({ items: [] }));
+      return;
+    }
+
+    wishlist.products.filter(
+      (item: Types.ObjectId) => String(item) !== productId,
+    );
+
+    await wishlist.save();
+
+    res.json(ok(getWishlistResponse(String(dbUser._id))));
   }),
 );

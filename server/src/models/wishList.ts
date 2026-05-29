@@ -2,7 +2,7 @@ import { HydratedDocument, model, Schema, Types } from "mongoose";
 
 export type wishlistType = {
   user: Types.ObjectId;
-  Product: Types.ObjectId[];
+  products: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -17,7 +17,7 @@ const WishlistSchema = new Schema<wishlistType>(
       unique: true,
       reqruied: true,
     },
-    Product: {
+    products: {
       type: [
         {
           type: Schema.Types.ObjectId,

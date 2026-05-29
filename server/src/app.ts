@@ -12,6 +12,7 @@ import { adminPromoRoute } from "./routes/admin/promo.route";
 import { customerProductRouter } from "./routes/customer/product.route";
 import { customerAddressRoute } from "./routes/customer/address.route";
 import { customerPromoRoute } from "./routes/customer/promo.route";
+import { customerCartWishlistRouter } from "./routes/customer/cart-wishlist.route";
 
 const app = express();
 
@@ -42,8 +43,9 @@ app.use("/admin", adminPromoRoute);
 
 //customer routes
 app.use("/customer", customerProductRouter);
-app.use("/customer", customerPromoRoute);
 app.use("/customer", customerAddressRoute);
+app.use("/customer", customerPromoRoute);
+app.use("/customer", customerCartWishlistRouter);
 
 app.use(notFound);
 app.use(errorHanlder);

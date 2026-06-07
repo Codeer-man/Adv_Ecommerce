@@ -13,6 +13,7 @@ import { customerProductRouter } from "./routes/customer/product.route";
 import { customerAddressRoute } from "./routes/customer/address.route";
 import { customerPromoRoute } from "./routes/customer/promo.route";
 import { customerCartWishlistRouter } from "./routes/customer/cart-wishlist.route";
+import { customerCheckoutRouter } from "./routes/customer/checkout.routes";
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use("/customer", customerProductRouter);
 app.use("/customer", customerAddressRoute);
 app.use("/customer", customerPromoRoute);
 app.use("/customer", customerCartWishlistRouter);
+app.use("/customer", customerCheckoutRouter);
 
 app.use(notFound);
 app.use(errorHanlder);

@@ -95,22 +95,37 @@ export async function apiPut<TResponse, Tbody = unknown>(
   }
 }
 
-export async function apiDelete<TResponse>(
+export async function apiPatch<TResponse, Tbody = unknown>(
   url: string,
-  // body?: Tbody,
+  body: Tbody,
   config?: AxiosRequestConfig,
 ) {
   try {
-    const response = await api.delete<ApiEnvelope<TResponse>>(
-      url,
-      config,
-      // body,
-      // config,
-    );
+    const respones = await api.patch<ApiEnvelope<TResponse>>(url, body, config);
+
+    if (respones.data.status === "error" || !respones.data.data) {
+      throw new Error(respones.data.errors?.[0].message || "Request fialed");
+    }
+
+    return respones.data.data;
+  } catch (error) {
+    throw new Error(getError(error));
+  }
+}
+
+export async function apiDelete<TResponse>(
+  url: string,
+
+  config?: AxiosRequestConfig,
+) {
+  try {
+    const response = await api.delete<ApiEnvelope<TResponse>>(url, config);
 
     if (response.data.status === "error" || !response.data.data) {
       throw new Error(response.data.errors?.[0].message || "Request failed");
     }
+
+    return response.data.data;
   } catch (error) {
     throw new Error(getError(error));
   }

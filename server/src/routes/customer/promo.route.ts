@@ -28,9 +28,9 @@ customerPromoRoute.post(
 
     const now = new Date();
 
-    if (now < foundPromo.startAt) {
+    if (now < foundPromo.startsAt) {
       throw new AppError(400, "Promo code is not active yes");
-    } else if (now > foundPromo.endedAt) {
+    } else if (now > foundPromo.endsAt) {
       throw new AppError(400, "Promo code is already expired");
     }
 

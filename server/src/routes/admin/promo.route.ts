@@ -18,8 +18,8 @@ type PromoDbItem = {
   percentage: number;
   count: number;
   minimumOrderValue: number;
-  startAt: Date;
-  endedAt: Date;
+  startsAt: Date;
+  endsAt: Date;
   createdAt: Date;
 };
 
@@ -30,8 +30,8 @@ function mapPromo(item: PromoDbItem) {
     percentage: item.percentage,
     count: item.count,
     minimumOrderValue: item.minimumOrderValue,
-    startAt: item.startAt,
-    endedAt: item.endedAt,
+    startsAt: item.startsAt,
+    endsAt: item.endsAt,
     createdAt: item.createdAt,
   };
 }
@@ -39,7 +39,7 @@ function mapPromo(item: PromoDbItem) {
 async function getAllPromo() {
   const promo = await Promo.find().sort({ createdAt: -1 });
 
-  return promo.map((prommo) => mapPromo(prommo.toObject()));
+  return promo.map((promo) => mapPromo(promo.toObject()));
 }
 
 function parsePromoPayload(req: Request) {
@@ -112,7 +112,7 @@ adminPromoRoute.post(
 
     res.json(
       ok({
-        item: await getAllPromo(),
+        items: await getAllPromo(),
       }),
     );
   }),
@@ -143,14 +143,14 @@ adminPromoRoute.patch(
     foundPromo.percentage = payload.percentage;
     foundPromo.count = payload.count;
     foundPromo.minimumOrderValue = payload.minimumOrderValue;
-    foundPromo.startAt = payload.startsAt;
-    foundPromo.endedAt = payload.endsAt;
+    foundPromo.startsAt = payload.startsAt;
+    foundPromo.endsAt = payload.endsAt;
 
     await foundPromo.save();
 
     res.json(
       ok({
-        item: await getAllPromo(),
+        items: await getAllPromo(),
       }),
     );
   }),

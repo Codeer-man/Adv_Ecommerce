@@ -12,7 +12,7 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Product";
 import AdminOrders from "./pages/admin/Order";
 import AdminSetting from "./pages/admin/Settingg";
-import AdminCoupon from "./pages/admin/Coupon";
+import AdminPromo from "./pages/admin/Promo";
 
 export const router = createBrowserRouter([
   {
@@ -69,7 +69,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "coupons",
-                element: <AdminCoupon />,
+                element: <AdminPromo />,
               },
               {
                 path: "orders",

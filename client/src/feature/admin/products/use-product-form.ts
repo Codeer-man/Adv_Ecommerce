@@ -181,7 +181,6 @@ export function useProductForm({
   function changeCoverImg(publicId: string) {
     updateField("coverImagePublicId", publicId);
   }
-  console.log(form, "form");
 
   return {
     form,

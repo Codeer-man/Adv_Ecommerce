@@ -5,8 +5,8 @@ export type Promo = {
   percentage: number;
   count: number;
   minimumOrderValue: number;
-  startAt: Date;
-  endedAt: Date;
+  startsAt: Date;
+  endsAt: Date;
   createdAt: Date;
   updatedAt: number;
 };
@@ -39,11 +39,11 @@ const PromoSchema = new Schema<Promo>(
       min: 0,
       required: true,
     },
-    startAt: {
+    startsAt: {
       type: Date,
       required: true,
     },
-    endedAt: {
+    endsAt: {
       type: Date,
       required: true,
     },

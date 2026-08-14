@@ -17,6 +17,7 @@ import { customerCheckoutRouter } from "./routes/customer/checkout.routes";
 import { customerOrderRouter } from "./routes/customer/order.route";
 import { customerCheckoutWithPointsRouter } from "./routes/customer/checkout-with-points.route";
 import { adminOrderRouter } from "./routes/admin/order.route";
+import { adminSettingsRouter } from "./routes/admin/setting.route";
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/auth", authRoute);
 app.use("/admin", adminProductRouter);
 app.use("/admin", adminPromoRoute);
 app.use("/admin", adminOrderRouter);
+app.use("/admin", adminSettingsRouter);
 
 //customer routes
 app.use("/customer", customerProductRouter);

@@ -18,7 +18,7 @@ type ProductAppledFilterListQuery = {
 };
 
 customerProductRouter.get(
-  "/categpries",
+  "/categories",
   asyncHanlder(async (_req, res) => {
     const categories = await Category.find({}).sort({ name: 1 });
     res.json(ok(categories));
@@ -46,10 +46,10 @@ customerProductRouter.get(
         query.brand = brand;
       }
       if (color) {
-        query.category = color;
+        query.colors = color;
       }
       if (size) {
-        query.size = size;
+        query.sizes = size;
       }
 
       let sortOption: Record<string, 1 | -1> = {

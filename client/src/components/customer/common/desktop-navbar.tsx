@@ -5,6 +5,7 @@ import {
   LogOut,
   type LucideIcon,
   ShoppingBag,
+  ShoppingBasket,
   ShoppingCart,
   Store,
   User,
@@ -122,6 +123,12 @@ export default function CustomerNavbar() {
                   <Link to={"/account"} className={dropdownItemLink}>
                     <User className=" h-4 w-4" />
                     <span>My account</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to={"/account"} className={dropdownItemLink}>
+                    <ShoppingBasket className=" h-4 w-4" />
+                    <span>My Orders</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem

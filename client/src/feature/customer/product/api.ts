@@ -40,6 +40,6 @@ export async function getCustomerProduct(params?: GetCustomerProductsParams) {
 
 export async function getProductDetail(productId: string) {
   return apiGet<CustomerProductDetailsResponse>(
-    `/customer/products/${productId}`,
+    `/customer/product/${productId}`,
   );
 }

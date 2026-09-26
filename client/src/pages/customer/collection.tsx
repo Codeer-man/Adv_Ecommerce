@@ -97,6 +97,9 @@ export default function Collection() {
     toggleFacet,
     clearFilters,
   } = useCustomerProductList();
+
+  if (loading) return <CommonLoader />;
+
   return (
     <Suspense fallback={<CommonLoader />}>
       <div className={pageWrapClass}>

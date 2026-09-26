@@ -14,6 +14,7 @@ import AdminOrders from "./pages/admin/Order";
 import AdminSetting from "./pages/admin/Settingg";
 import AdminPromo from "./pages/admin/Promo";
 import Collection from "./pages/customer/collection";
+import CollectionDetail from "./pages/customer/collection-detail";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
           {
             path: "collections",
             element: <Collection />,
+          },
+          {
+            path: "collection/:id",
+            element: <CollectionDetail />,
           },
         ],
       },

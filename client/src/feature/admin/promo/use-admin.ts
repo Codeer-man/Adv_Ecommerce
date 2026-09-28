@@ -76,7 +76,6 @@ export function useAdminPromo() {
 
     try {
       setDeletePromoId(promoId);
-      console.log(deletePromoId, "promoi if");
 
       const response = await deleteAdminPromoCodes(promoId);
 

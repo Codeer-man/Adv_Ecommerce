@@ -28,7 +28,7 @@ const pageWrapClass = "min-h-screen bg-background";
 const heroSectionClass =
   "border-b border-border/60 bg-gradient-to-b from-primary/10 via-background to-background";
 
-const heroContainerClass = "mx-auto max-w-7xl px-4 py-10";
+const heroContainerClass = "mx-auto max-w-7xl px-4 py-2";
 
 const heroEyebrowClass = "text-sm uppercase tracking-[0.2em] text-primary";
 

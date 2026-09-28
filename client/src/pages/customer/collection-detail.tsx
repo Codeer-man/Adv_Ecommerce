@@ -9,12 +9,14 @@ import CommonLoader from "../../components/common/loader";
 
 import ProductDetailSummary from "../../components/customer/products/details/product-detail-sumary";
 import CustomerRelatedProduct from "../../components/customer/products/details/product-related";
+import { useAuthStore } from "../../feature/auth/store";
+import { useCustomerWishlistStore } from "../../feature/customer/wishlist/store";
 
 const pageWrapClass = "min-h-screen bg-background";
 const heroSectionClass =
   "border-b border-border/60 bg-gradient-to-b from-primary/10 via-background to-background";
-const heroContainerClass = "mx-auto max-w-7xl px-4 py-8";
-const backButtonClass = "mb-4 rounded-none px-0 hover:bg-transparent";
+const heroContainerClass = "mx-auto max-w-7xl px-4 py-2 ";
+const backButtonClass = " rounded-none px-0 hover:bg-transparent";
 const backIconClass = "mr-2 h-4 w-4";
 const heroEyebrowClass = "text-sm uppercase tracking-[0.2em] text-primary";
 const heroTitleClass =
@@ -31,6 +33,7 @@ const relatedGridClass = "grid gap-5 sm:grid-cols-2 xl:grid-cols-4";
 export default function CollectionDetail() {
   const { id = "" } = useParams();
   const { isSignedIn, isLoaded } = useAuth();
+  const { isBootstrapped } = useAuthStore();
 
   const {
     loadProduct,
@@ -47,8 +50,14 @@ export default function CollectionDetail() {
     toggleWishlist,
   } = useCustomerProductDetailStore((state) => state);
 
-  const product = data?.product;
+  const wishlistItems = useCustomerWishlistStore((state) => state.items);
+
+  const product = data?.product ?? null;
   const relatedProduct = data?.relatedProducts ?? [];
+
+  const isWishlistActive = !!product
+    ? wishlistItems.some((item) => item.productId === product._id)
+    : false;
 
   useEffect(() => {
     void loadProduct(id);
@@ -86,9 +95,18 @@ export default function CollectionDetail() {
           <ProductDetailSummary
             product={product}
             selectedColor={selectedColor}
-            selectedSize={selectedColor}
+            selectedSize={selectedSize}
             setSelectedColor={setSelectedColor}
             setSelectedSize={setSelectedSize}
+            isWishlistActive={isWishlistActive}
+            toggleWishlist={() =>
+              toggleWishlist(
+                isLoaded,
+                isBootstrapped,
+                Boolean(isSignedIn),
+                isWishlistActive,
+              )
+            }
           />
 
           {relatedProduct.length ? (

@@ -53,6 +53,8 @@ type customerProductDetailProps = {
   selectedSize: string;
   setSelectedColor: (value: string) => void;
   setSelectedSize: (value: ProductSize) => void;
+  toggleWishlist: () => Promise<void>;
+  isWishlistActive: boolean;
 };
 
 export default function ProductDetailSummary({
@@ -61,6 +63,8 @@ export default function ProductDetailSummary({
   selectedSize,
   setSelectedColor,
   setSelectedSize,
+  toggleWishlist,
+  isWishlistActive,
 }: customerProductDetailProps) {
   const salePrice = extractSalePrice(product);
   const hasSale = product.salePercentage > 0;
@@ -113,7 +117,7 @@ export default function ProductDetailSummary({
         />
       ) : null}
 
-      {product.colors.length ? (
+      {product.sizes.length ? (
         <CustomerProductOptionsGroup
           values={product.sizes}
           selectedValue={selectedSize}
@@ -139,12 +143,12 @@ export default function ProductDetailSummary({
           type="button"
           variant="outline"
           className={secondaryButtonClass}
-          // onClick={() => void toggleWishlist()}
+          onClick={() => void toggleWishlist()}
         >
-          {/* <Heart
+          <Heart
             className={`${iconClass} ${isWishlistActive ? "fill-current" : ""}`}
           />
-          {isWishlistActive ? "Remove from Wishlist" : "Save to Wishlist"} */}
+          {isWishlistActive ? "Remove from Wishlist" : "Save to Wishlist"}
         </Button>
       </div>
     </section>

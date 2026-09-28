@@ -44,17 +44,17 @@ function formatProduct(product: ProductPreview) {
     product.images[0].url ||
     "";
 
-  const findPrice = product.salePercentage
+  const finalPrice = product.salePercentage
     ? Math.round(product.price - (product.price * product.salePercentage) / 100)
     : product.price;
 
   return {
-    _id: product._id,
+    productId: product._id,
     title: product.title,
     brand: product.brand,
     coverImage: image,
     image: product.images,
-    findPrice,
+    finalPrice,
   };
 }
 
@@ -457,15 +457,15 @@ customerCartWishlistRouter.post(
 );
 
 customerCartWishlistRouter.get(
-  "/wishlist/items",
+  "/wishlist",
   asyncHanlder(async (req, res) => {
     const dbUser = await getDbUserFromReq(req);
 
-    res.json(ok(getWishlistResponse(String(dbUser._id))));
+    res.json(ok(await getWishlistResponse(String(dbUser._id))));
   }),
 );
 
-customerCartWishlistRouter.get(
+customerCartWishlistRouter.post(
   "/wishlist/items",
   asyncHanlder(async (req, res) => {
     const dbUser = await getDbUserFromReq(req);
@@ -498,16 +498,16 @@ customerCartWishlistRouter.get(
       await wishlist.save();
     }
 
-    res.json(ok(getWishlistResponse(String(dbUser._id))));
+    res.json(ok(await getWishlistResponse(String(dbUser._id))));
   }),
 );
 
 customerCartWishlistRouter.delete(
-  "/wishlist/delete",
+  "/wishlist/delete/:productId",
   asyncHanlder(async (req, res) => {
     const dbUser = await getDbUserFromReq(req);
 
-    const productId = String(req.body.productId || "").trim();
+    const productId = String(req.params.productId || "").trim();
 
     textRequired(productId, "Product id is requried");
 
@@ -518,12 +518,12 @@ customerCartWishlistRouter.delete(
       return;
     }
 
-    wishlist.products.filter(
+    wishlist.products = wishlist.products.filter(
       (item: Types.ObjectId) => String(item) !== productId,
     );
 
     await wishlist.save();
 
-    res.json(ok(getWishlistResponse(String(dbUser._id))));
+    res.json(ok(await getWishlistResponse(String(dbUser._id))));
   }),
 );

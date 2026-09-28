@@ -1,6 +1,6 @@
 import { useAuth } from "@clerk/react";
 import {
-  HeartIcon,
+  Heart,
   LogIn,
   LogOut,
   type LucideIcon,
@@ -19,6 +19,10 @@ import {
 } from "../../ui/dropdown-menu";
 import { Button } from "../../ui/button";
 import CustomerMobileNavbar from "./mobile-navbar";
+import { useCustomerWishlistStore } from "../../../feature/customer/wishlist/store";
+import { useAuthStore } from "../../../feature/auth/store";
+import { useEffect } from "react";
+import CustomerWishlistDialog from "../wishlist/customer-wishlist-dialog";
 
 type NavItem = {
   label: string;
@@ -87,7 +91,31 @@ function NavTextLink({
 }
 
 export default function CustomerNavbar() {
-  const { isSignedIn, signOut } = useAuth();
+  const { isSignedIn, signOut, isLoaded } = useAuth();
+
+  const { isBootstrapped } = useAuthStore();
+
+  const {
+    clear,
+    items: wishlistItems,
+    setIsOpen: setWishlistOpen,
+    loadWishlist,
+  } = useCustomerWishlistStore((state) => state);
+
+  useEffect(() => {
+    if (!isLoaded || !isBootstrapped) return;
+
+    if (!isSignedIn) {
+      clear();
+      return;
+    }
+
+    void loadWishlist();
+  }, [isBootstrapped, isLoaded, isSignedIn, clear, loadWishlist]);
+
+  const showSignedInUI = isLoaded && isSignedIn && isBootstrapped;
+  const wishlistCount = wishlistItems.length;
+
   return (
     <header className={headerClass}>
       <div className={shell}>
@@ -105,7 +133,16 @@ export default function CustomerNavbar() {
         </div>
 
         <nav className={desktopNav}>
-          <NavTextLink href="/wishlist" label="Wishlist" icon={HeartIcon} />
+          {showSignedInUI ? (
+            <button
+              className={iconLink}
+              type="button"
+              onClick={() => setWishlistOpen(true)}
+            >
+              <Heart className="w-[20px] h-[20px]" />
+              <span className={cartBadge}>{wishlistCount} </span>
+            </button>
+          ) : null}
 
           {isSignedIn ? (
             <DropdownMenu>
@@ -150,6 +187,8 @@ export default function CustomerNavbar() {
           </Link>
         </nav>
         <CustomerMobileNavbar isSignedIn={!!isSignedIn} />
+
+        {showSignedInUI ? <CustomerWishlistDialog /> : null}
       </div>
     </header>
   );

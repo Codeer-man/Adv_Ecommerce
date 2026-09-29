@@ -33,7 +33,6 @@ function CustomerWishlistDialog() {
   const { isOpen, setIsOpen, items, removeItem } = useCustomerWishlistStore(
     (state) => state,
   );
-  console.log(items);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

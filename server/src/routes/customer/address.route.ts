@@ -45,7 +45,7 @@ customerAddressRoute.get(
       .sort((a, b) => Number(b.isDefault) - Number(a.isDefault))
       .map(mapAddress);
 
-    res.json(ok(items));
+    res.json(ok({ items: items }));
   }),
 );
 
@@ -93,7 +93,7 @@ customerAddressRoute.post(
       .sort((a, b) => Number(b.isDefault) - Number(a.isDefault))
       .map(mapAddress);
 
-    res.json(ok(items));
+    res.json(ok({ items }));
   }),
 );
 
@@ -102,7 +102,7 @@ customerAddressRoute.patch(
   asyncHanlder(async (req, res) => {
     const dbUser = await getDbUserFromReq(req);
 
-    const addressId = req.body.addressId.trim() as String;
+    const addressId = String(req.params.addressId).trim();
     textRequired(addressId, "Address id is requried");
 
     const fullName = String(req.body.fullName);
@@ -147,9 +147,13 @@ customerAddressRoute.patch(
       getAddressFromUser.isDefault = true;
     }
 
-    const newAddressSaved = await foundUser.save();
+    await foundUser.save();
 
-    res.json(ok(newAddressSaved));
+    const items = [...foundUser.addresses]
+      .sort((a, b) => Number(b.isDefault) - Number(a.isDefault))
+      .map(mapAddress);
+
+    res.json(ok({ items }));
   }),
 );
 
@@ -157,7 +161,7 @@ customerAddressRoute.delete(
   "/addresses/:addressId",
   asyncHanlder(async (req, res) => {
     const dbUser = await getDbUserFromReq(req);
-    const addressId = String(req.params.id).trim();
+    const addressId = String(req.params.addressId).trim();
     textRequired(addressId, "Address id is required");
 
     const user = await User.findById(dbUser._id);

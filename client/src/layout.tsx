@@ -48,12 +48,12 @@ export const router = createBrowserRouter([
       },
       {
         element: <ProtectedLayout />,
-        children: [
-          {
-            path: "profile",
-            element: <CustomerProfile />,
-          },
-        ],
+        // children: [
+        //   {
+        //     path: "profile",
+        //     element: <CustomerProfile />,
+        //   },
+        // ],
       },
     ],
   },

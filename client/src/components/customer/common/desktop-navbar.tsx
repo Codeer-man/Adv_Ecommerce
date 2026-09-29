@@ -9,6 +9,7 @@ import {
   ShoppingCart,
   Store,
   User,
+  User2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
@@ -23,6 +24,8 @@ import { useCustomerWishlistStore } from "../../../feature/customer/wishlist/sto
 import { useAuthStore } from "../../../feature/auth/store";
 import { useEffect } from "react";
 import CustomerWishlistDialog from "../wishlist/customer-wishlist-dialog";
+import { useCustomerProfileStore } from "../../../feature/customer/profile/store";
+import CustomerProfileDialog from "../profile/customer-profile";
 
 type NavItem = {
   label: string;
@@ -95,8 +98,12 @@ export default function CustomerNavbar() {
 
   const { isBootstrapped } = useAuthStore();
 
+  const { clear: clearProfile, openProfile } = useCustomerProfileStore(
+    (state) => state,
+  );
+
   const {
-    clear,
+    clear: clearWishlist,
     items: wishlistItems,
     setIsOpen: setWishlistOpen,
     loadWishlist,
@@ -106,12 +113,20 @@ export default function CustomerNavbar() {
     if (!isLoaded || !isBootstrapped) return;
 
     if (!isSignedIn) {
-      clear();
+      clearWishlist();
+      clearProfile();
       return;
     }
 
     void loadWishlist();
-  }, [isBootstrapped, isLoaded, isSignedIn, clear, loadWishlist]);
+  }, [
+    isBootstrapped,
+    isLoaded,
+    isSignedIn,
+    clearWishlist,
+    clearProfile,
+    loadWishlist,
+  ]);
 
   const showSignedInUI = isLoaded && isSignedIn && isBootstrapped;
   const wishlistCount = wishlistItems.length;
@@ -156,11 +171,12 @@ export default function CustomerNavbar() {
                 align="start"
                 className={accountDropdownContent}
               >
-                <DropdownMenuItem>
-                  <Link to={"/account"} className={dropdownItemLink}>
-                    <User className=" h-4 w-4" />
-                    <span>My account</span>
-                  </Link>
+                <DropdownMenuItem
+                  onClick={() => void openProfile()}
+                  className={dropdownItemLink}
+                >
+                  {" "}
+                  <User2 /> My Account
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Link to={"/account"} className={dropdownItemLink}>
@@ -189,6 +205,7 @@ export default function CustomerNavbar() {
         <CustomerMobileNavbar isSignedIn={!!isSignedIn} />
 
         {showSignedInUI ? <CustomerWishlistDialog /> : null}
+        {showSignedInUI ? <CustomerProfileDialog /> : null}
       </div>
     </header>
   );

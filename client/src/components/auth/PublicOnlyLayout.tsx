@@ -18,7 +18,7 @@ export function PublicOnlyLayout() {
     isSignedIn &&
     (location.pathname === "/sign-in" || location.pathname === "/sign-up")
   ) {
-    <Navigate to={"profile"} replace />;
+    <Navigate to={"/"} replace />;
   }
 
   return <Outlet />;

@@ -107,6 +107,9 @@ export default function CollectionDetail() {
                 isWishlistActive,
               )
             }
+            onAddToCart={() =>
+              addToCart(isLoaded, isBootstrapped, Boolean(isSignedIn))
+            }
           />
 
           {relatedProduct.length ? (

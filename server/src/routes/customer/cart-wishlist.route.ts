@@ -166,11 +166,7 @@ customerCartWishlistRouter.get(
   asyncHanlder(async (req: Request, res: Response) => {
     const dbUser = await getDbUserFromReq(req);
 
-    res.json(
-      ok({
-        data: await getCartResponse(String(dbUser._id)),
-      }),
-    );
+    res.json(ok(await getCartResponse(String(dbUser._id))));
   }),
 );
 
@@ -184,7 +180,7 @@ customerCartWishlistRouter.post(
     const colorValue = String(req.body.color || "");
     const sizeValue = String(req.body.size || "");
 
-    if (Number.isNaN(quantity || quantity < 1)) {
+    if (Number.isNaN(quantity) || quantity < 1) {
       throw new AppError(400, "Quantity must be atleast 1");
     }
 
@@ -252,8 +248,8 @@ customerCartWishlistRouter.patch(
     const dbUser = await getDbUserFromReq(req);
 
     const productId = String(req.params.productId);
-    const colorValue = String(req.body.colorValue || "").trim();
-    const sizeValue = String(req.body.sizeValue || "").trim();
+    const colorValue = String(req.query.color || "").trim();
+    const sizeValue = String(req.query.size || "").trim();
 
     textRequired(productId, "Product id is required");
     const cart = await Cart.findOne({ user: dbUser._id });
@@ -272,9 +268,9 @@ customerCartWishlistRouter.patch(
       sizeValue,
     );
 
-    const itemIndex = foundCart.items.findIndex((item: CartItem) => {
-      isSameCartItem(item, String(foundProduct._id), color, size);
-    });
+    const itemIndex = foundCart.items.findIndex((item: CartItem) =>
+      isSameCartItem(item, String(foundProduct._id), color, size),
+    );
 
     if (itemIndex < 0) {
       throw new AppError(400, "cart item not found here");
@@ -298,8 +294,8 @@ customerCartWishlistRouter.patch(
     const dbUser = await getDbUserFromReq(req);
 
     const productId = String(req.params.productId);
-    const colorValue = String(req.body.colorValue || "").trim();
-    const sizeValue = String(req.body.sizeValue || "").trim();
+    const colorValue = String(req.query.color || "").trim();
+    const sizeValue = String(req.query.size || "").trim();
 
     textRequired(productId, "Product id is required");
     const cart = await Cart.findOne({ user: dbUser._id });
@@ -318,9 +314,9 @@ customerCartWishlistRouter.patch(
       sizeValue,
     );
 
-    const itemIndex = foundCart.items.findIndex((item: CartItem) => {
-      isSameCartItem(item, String(foundProduct._id), color, size);
-    });
+    const itemIndex = foundCart.items.findIndex((item: CartItem) =>
+      isSameCartItem(item, String(foundProduct._id), color, size),
+    );
 
     if (itemIndex < 0) {
       throw new AppError(400, "cart item not found here");
@@ -344,8 +340,8 @@ customerCartWishlistRouter.delete(
     const dbUser = await getDbUserFromReq(req);
 
     const productId = String(req.params.productId);
-    const colorValue = String(req.body.colorValue || "").trim();
-    const sizeValue = String(req.body.sizeValue || "").trim();
+    const colorValue = String(req.query.color || "").trim();
+    const sizeValue = String(req.query.size || "").trim();
 
     textRequired(productId, "Product id is required");
 

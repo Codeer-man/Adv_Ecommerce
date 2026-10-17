@@ -79,7 +79,7 @@ export async function apiPost<TResponse, Tbody = unknown>(
 
 export async function apiPut<TResponse, Tbody = unknown>(
   url: string,
-  body: Tbody,
+  body?: Tbody,
   config?: AxiosRequestConfig,
 ) {
   try {
@@ -97,7 +97,7 @@ export async function apiPut<TResponse, Tbody = unknown>(
 
 export async function apiPatch<TResponse, Tbody = unknown>(
   url: string,
-  body: Tbody,
+  body?: Tbody,
   config?: AxiosRequestConfig,
 ) {
   try {

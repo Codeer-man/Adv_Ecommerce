@@ -26,6 +26,8 @@ import { useEffect } from "react";
 import CustomerWishlistDialog from "../wishlist/customer-wishlist-dialog";
 import { useCustomerProfileStore } from "../../../feature/customer/profile/store";
 import CustomerProfileDialog from "../profile/customer-profile";
+import { userCustomerCartAndCheckoutStore } from "../../../feature/customer/cart-checkout/store";
+import CustomerCartAndCheckoutDrawer from "../cart-and-checkout/cartAndCheckoutDrawer";
 
 type NavItem = {
   label: string;
@@ -101,6 +103,8 @@ export default function CustomerNavbar() {
   const { clear: clearProfile, openProfile } = useCustomerProfileStore(
     (state) => state,
   );
+
+  const { setOpen, cart } = userCustomerCartAndCheckoutStore((state) => state);
 
   const {
     clear: clearWishlist,
@@ -197,15 +201,16 @@ export default function CustomerNavbar() {
             <NavTextLink href="/sign-in" label="Login" icon={LogIn} />
           )}
 
-          <Link to={"/cart"} className={iconLink}>
+          <div onClick={() => setOpen(true)} className={iconLink}>
             <ShoppingCart className="w-4 h-4" />
-            <span className={cartBadge}>0</span>
-          </Link>
+            <span className={cartBadge}>{cart.items.length} </span>
+          </div>
         </nav>
         <CustomerMobileNavbar isSignedIn={!!isSignedIn} />
 
         {showSignedInUI ? <CustomerWishlistDialog /> : null}
         {showSignedInUI ? <CustomerProfileDialog /> : null}
+        <CustomerCartAndCheckoutDrawer />
       </div>
     </header>
   );

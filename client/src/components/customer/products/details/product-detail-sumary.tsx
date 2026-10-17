@@ -55,6 +55,7 @@ type customerProductDetailProps = {
   setSelectedSize: (value: ProductSize) => void;
   toggleWishlist: () => Promise<void>;
   isWishlistActive: boolean;
+  onAddToCart: () => Promise<void>;
 };
 
 export default function ProductDetailSummary({
@@ -65,6 +66,7 @@ export default function ProductDetailSummary({
   setSelectedSize,
   toggleWishlist,
   isWishlistActive,
+  onAddToCart,
 }: customerProductDetailProps) {
   const salePrice = extractSalePrice(product);
   const hasSale = product.salePercentage > 0;
@@ -133,7 +135,7 @@ export default function ProductDetailSummary({
           type="button"
           className={primaryButtonClass}
           disabled={product.stock < 1}
-          // onClick={() => void onAddToCart()}
+          onClick={() => void onAddToCart()}
         >
           <ShoppingBag className={iconClass} />
           Add to Cart

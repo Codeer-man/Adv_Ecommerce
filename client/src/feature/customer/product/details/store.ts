@@ -8,6 +8,7 @@ import {
   removeCustomerWishlist,
 } from "../../wishlist/api";
 import { useCustomerWishlistStore } from "../../wishlist/store";
+import { userCustomerCartAndCheckoutStore } from "../../cart-checkout/store";
 
 type CustomerProductDetailsStore = {
   loading: boolean;
@@ -20,7 +21,7 @@ type CustomerProductDetailsStore = {
   setSelectedImage: (value: string) => void;
   setSelectedColor: (value: string) => void;
   setSelectedSize: (value: ProductSize | "") => void;
-  addToCart?: (
+  addToCart: (
     isLoaded: boolean,
     isBootstrapped: boolean,
     isSignedIn: boolean,
@@ -118,5 +119,32 @@ export const useCustomerProductDetailStore =
       } catch {
         toast.error("Failed to add to the wishlist items");
       }
+    },
+    addToCart: async (isLoaded, isBootstrapped, isSignedIn) => {
+      const { data, selectedColor, selectedSize } = get();
+      const product = data?.product ?? null;
+
+      if (!product || product.stock < 1) return;
+
+      if (!isLoaded || !isBootstrapped) {
+        toast.error("try again");
+        return;
+      }
+
+      await userCustomerCartAndCheckoutStore.getState().addItem(
+        {
+          productId: product._id,
+          brand: product.brand,
+          finalPrice: product.salePercentage
+            ? product.price - (product.price * product.salePercentage) / 100
+            : product.price,
+          image: getCoverImage(product),
+          title: product.title,
+          color: selectedColor || undefined,
+          quantity: 1,
+          size: selectedSize || undefined,
+        },
+        isSignedIn,
+      );
     },
   }));

@@ -144,8 +144,8 @@ customerCheckoutRouter.post(
       const now = new Date();
 
       if (
-        now < foundPromo.startAt ||
-        now > foundPromo.endedAt ||
+        now < foundPromo.startsAt ||
+        now > foundPromo.endsAt ||
         foundPromo.count < 1
       ) {
         throw new AppError(400, "Promo code not active");
